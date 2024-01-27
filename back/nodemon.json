@@ -1,0 +1,5 @@
+{
+	"watch": ["src", "@types/express"],
+	"ext": ".ts,.js",
+	"exec": "ts-node --files ./src/index.ts"
+}
