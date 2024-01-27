@@ -1,0 +1,16 @@
+.container {
+	display: flex;
+	align-items: center;
+}
+
+.border {
+	border-bottom: 1px solid #27272a;
+	flex-grow: 1;
+	border-color: #27272a;
+}
+
+.content {
+	padding: 0 10px;
+	white-space: nowrap;
+	color: #8b8b93;
+}
