@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+    server:
+        container_name: back
+        build: "./back/"
+        restart: always
+        ports:
+            - "8080:8080"
+        networks:
+            - net
+        ulimits:
+            nofile:
+                soft: 60000
+                hard: 60000
+
+    frontend:
+        container_name: front
+        build: "./front/"
+        restart: always
+        networks:
+            - net
+        ports:
+            - "8081:8081"
+        ulimits:
+            nofile:
+                soft: 60000
+                hard: 60000
+
+networks:
+    net:
+        driver: bridge
