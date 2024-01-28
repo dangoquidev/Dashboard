@@ -1,5 +1,4 @@
-import { Link as RouterLink, Outlet } from "react-router-dom";
-import React from "react";
+import { Outlet } from "react-router-dom";
 
 const OutletWrapper = (): JSX.Element => {
 	return (
