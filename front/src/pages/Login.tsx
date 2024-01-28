@@ -1,11 +1,13 @@
-import { Button, Input, Image } from "@nextui-org/react";
-import Divider from "../utils/Divider/Divider";
+import { Button, Input} from "@nextui-org/react";
+import Divider from "../Components/Divider/Divider";
 import { FaGoogle } from "react-icons/fa";
 import React from "react";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../Icons/Eyes";
 import { isEmailValid } from "../utils/isEmailValid";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = (): JSX.Element => {
+	const navigate = useNavigate();
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [isVisible, setIsVisible] = React.useState(false);
@@ -23,24 +25,37 @@ const Login = (): JSX.Element => {
 			setEmptyFields(true);
 			return;
 		}
-		console.log("email:", email, "password:", password);
+		navigate('/dashboard/app');
 	};
 
-	return (
-		<div
-			style={{
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
-				height: "100vh",
-			}}>
-			<div
-				style={{
-					width: "30%",
-					display: "flex",
-					flexDirection: "column",
-					gap: "10px",
-				}}>
+    return (
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "100vh",
+                padding: "0 20px",
+                boxSizing: "border-box",
+            }}
+        >
+			<Link to="/register">
+				<Button
+					className="absolute top-4 right-4"
+					variant="light"
+				>
+					Register
+				</Button>
+			</Link>
+            <div
+                style={{
+                    width: "100%",
+                    maxWidth: "400px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                }}
+            >
 				<h1
 					style={{
 						textAlign: "center",

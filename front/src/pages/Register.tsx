@@ -1,10 +1,11 @@
 import React from "react";
 import { Button, Input } from "@nextui-org/react";
-import Divider from "../utils/Divider/Divider";
+import Divider from "../Components/Divider/Divider";
 import { FaGoogle } from "react-icons/fa";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../Icons/Eyes";
 import { isPasswordStrong } from "../utils/isPasswordStrong";
 import { isEmailValid } from "../utils/isEmailValid";
+import { Link } from "react-router-dom";
 
 const Register = (): JSX.Element => {
 	const [email, setEmail] = React.useState("");
@@ -12,18 +13,18 @@ const Register = (): JSX.Element => {
 	const [confirmPassword, setConfirmPassword] = React.useState("");
 	const [isVisible, setIsVisible] = React.useState(false);
 	const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] = React.useState(false);
+	const [emailValid, setEmailValid] = React.useState(false);
 
 	const isPasswordInvalid = React.useMemo(() => {
 		return isPasswordStrong(password);
 	}, [password]);
 
-	const isEmailInvalid = React.useMemo(() => {
-		return isEmailValid(email);
-	}, [email]);
-
 	const toggleVisibility = () => setIsVisible(!isVisible);
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
+		const test = await isEmailValid(email);
+		console.log(test);
+		setEmailValid(!test);
 		if (password !== confirmPassword) {
 			setIsConfirmPasswordInvalid(true);
 		} else {
@@ -32,21 +33,35 @@ const Register = (): JSX.Element => {
 		}
 	};
 
-	return (
-		<div
-			style={{
-				display: "flex",
-				justifyContent: "center",
-				alignItems: "center",
-				height: "100vh",
-			}}>
-			<div
-				style={{
-					width: "30%",
-					display: "flex",
-					flexDirection: "column",
-					gap: "10px",
-				}}>
+    return (
+        <div
+            style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "100vh",
+                padding: "0 20px",
+                boxSizing: "border-box",
+            }}
+        >
+			<Link to="/login">
+				<Button
+					className="absolute top-4 right-4"
+					variant="light"
+					onClick={() => console.log("Switch to Login")}
+				>
+					Login
+				</Button>
+			</Link>
+            <div
+                style={{
+                    width: "100%",
+                    maxWidth: "400px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                }}
+            >
 				<h1
 					style={{
 						textAlign: "center",
@@ -67,10 +82,13 @@ const Register = (): JSX.Element => {
 					type='email'
 					placeholder='nom@exemple.com'
 					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					color={isEmailValid(email) ? "danger" : "default"}
-					errorMessage={isEmailValid(email) && "Please enter a valid email"}
-					isInvalid={isEmailValid(email)}
+					onChange={(e) => {
+						setEmail(e.target.value);
+						setEmailValid(false);
+					}}
+					color={emailValid ? "danger" : "default"}
+					errorMessage={emailValid && "Please enter a valid email"}
+					isInvalid={emailValid}
 				/>
 				<Input
 					variant='bordered'
