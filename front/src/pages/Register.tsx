@@ -3,19 +3,31 @@ import { Button, Input } from "@nextui-org/react";
 import Divider from "../utils/Divider/Divider";
 import { FaGoogle } from "react-icons/fa";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../Icons/Eyes";
+import { isPasswordStrong } from "../utils/isPasswordStrong";
+import { isEmailValid } from "../utils/isEmailValid";
 
 const Register = (): JSX.Element => {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [confirmPassword, setConfirmPassword] = React.useState("");
 	const [isVisible, setIsVisible] = React.useState(false);
+	const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] = React.useState(false);
+
+	const isPasswordInvalid = React.useMemo(() => {
+		return isPasswordStrong(password);
+	}, [password]);
+
+	const isEmailInvalid = React.useMemo(() => {
+		return isEmailValid(email);
+	}, [email]);
 
 	const toggleVisibility = () => setIsVisible(!isVisible);
 
 	const handleSubmit = () => {
 		if (password !== confirmPassword) {
-			console.log("Passwords do not match");
+			setIsConfirmPasswordInvalid(true);
 		} else {
+			setIsConfirmPasswordInvalid(false);
 			console.log("email:", email, "password:", password);
 		}
 	};
@@ -56,6 +68,9 @@ const Register = (): JSX.Element => {
 					placeholder='nom@exemple.com'
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
+					color={isEmailValid(email) ? "danger" : "default"}
+					errorMessage={isEmailValid(email) && "Please enter a valid email"}
+					isInvalid={isEmailValid(email)}
 				/>
 				<Input
 					variant='bordered'
@@ -73,6 +88,8 @@ const Register = (): JSX.Element => {
 						</button>
 					}
 					type={isVisible ? "text" : "password"}
+					color={isPasswordInvalid.color}
+					description={isPasswordInvalid.strength && `Your password is ${isPasswordInvalid.strength}` }
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
@@ -92,6 +109,8 @@ const Register = (): JSX.Element => {
 						</button>
 					}
 					type={isVisible ? "text" : "password"}
+					color={isConfirmPasswordInvalid ? "danger" : "default"}
+					description={isConfirmPasswordInvalid ? "Passwords do not match" : ""}
 					value={confirmPassword}
 					onChange={(e) => setConfirmPassword(e.target.value)}
 				/>

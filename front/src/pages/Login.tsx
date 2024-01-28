@@ -3,15 +3,26 @@ import Divider from "../utils/Divider/Divider";
 import { FaGoogle } from "react-icons/fa";
 import React from "react";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../Icons/Eyes";
+import { isEmailValid } from "../utils/isEmailValid";
 
 const Login = (): JSX.Element => {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [isVisible, setIsVisible] = React.useState(false);
+	const [emptyFields, setEmptyFields] = React.useState(false);
 
 	const toggleVisibility = () => setIsVisible(!isVisible);
+	
+	const isEmailInvalid = React.useMemo(() => {
+		return !isEmailValid(email);
+	}, [email]);
 
 	const handleSubmit = () => {
+		console.log(emptyFields);
+		if (!email || !password) {
+			setEmptyFields(true);
+			return;
+		}
 		console.log("email:", email, "password:", password);
 	};
 
@@ -51,6 +62,9 @@ const Login = (): JSX.Element => {
 					placeholder='nom@exemple.com'
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
+					color={isEmailInvalid ? "danger" : "default"}
+					errorMessage={isEmailInvalid && "Please enter a valid email"}
+					isInvalid={isEmailInvalid}
 				/>
 				<Input
 					variant='bordered'
