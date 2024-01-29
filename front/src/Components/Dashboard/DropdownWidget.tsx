@@ -19,14 +19,10 @@ export const DropdownWidget = () => {
         setHover(!hover);
     };
 
-    const linkStyle = {
-        cursor: 'pointer',
-        color: hover ? '#FFFFFF' : '#828282'
-    };
     return (
         <Dropdown>
             <DropdownTrigger>
-                <Link onMouseEnter={toggleHover} onMouseLeave={toggleHover} style={linkStyle}>
+                <Link onMouseEnter={toggleHover} onMouseLeave={toggleHover} color="foreground">
                 Ajouter un widget
                 </Link>
             </DropdownTrigger>
