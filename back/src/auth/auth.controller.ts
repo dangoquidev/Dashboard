@@ -84,14 +84,9 @@ export const login = async (req: express.Request, res: express.Response) => {
 
 		await user.save();
 
-		res.cookie("SESSION-TOKEN", user.authentification.sessionToken, {
-			domain: "localhost",
-			path: "/",
-		});
-
 		return res
 			.status(200)
-			.json({ success: true, message: "User logged in" })
+			.json({ success: true, message: "User logged in", data: user.authentification.sessionToken })
 			.end();
 	} catch (error) {
 		console.log(error);
