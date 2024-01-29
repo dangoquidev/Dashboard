@@ -3,17 +3,24 @@ import { Button, Input } from "@nextui-org/react";
 import Divider from "../Components/Divider/Divider";
 import { FaGoogle } from "react-icons/fa";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../Icons/Eyes";
-import { isPasswordStrong } from "../utils/isPasswordStrong";
-import { isEmailValid } from "../utils/isEmailValid";
+import { isPasswordStrong } from "../Utils/isPasswordStrong";
+import { isEmailValid } from "../Utils/isEmailValid";
 import { Link } from "react-router-dom";
+import { AuthRegister } from "../Services/Auth";
+import { useNavigate } from "react-router-dom";
 
 const Register = (): JSX.Element => {
+	const [username, setUsername] = React.useState("");
+	const [isUsernameValid, setIsUsernameValid] = React.useState(false);
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [confirmPassword, setConfirmPassword] = React.useState("");
 	const [isVisible, setIsVisible] = React.useState(false);
 	const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] = React.useState(false);
 	const [emailValid, setEmailValid] = React.useState(false);
+	const [emptyFields, setEmptyFields] = React.useState(false);
+	const [userAlreadyExists, setUserAlreadyExists] = React.useState(false);
+	const navigate = useNavigate();
 
 	const isPasswordInvalid = React.useMemo(() => {
 		return isPasswordStrong(password);
@@ -22,14 +29,31 @@ const Register = (): JSX.Element => {
 	const toggleVisibility = () => setIsVisible(!isVisible);
 
 	const handleSubmit = async () => {
-		const test = await isEmailValid(email);
-		console.log(test);
-		setEmailValid(!test);
+		if (!username || !password || !email) {
+			setEmptyFields(true);
+			return;
+		}
+		const isValid = await isEmailValid(email);
+		if (!isValid) {
+			setEmailValid(!isValid);
+			return;
+		}
 		if (password !== confirmPassword) {
 			setIsConfirmPasswordInvalid(true);
+			return;
 		} else {
 			setIsConfirmPasswordInvalid(false);
-			console.log("email:", email, "password:", password);
+		}
+		if (isPasswordInvalid.strength !== "strong") {
+			return;
+		}
+		const res = await AuthRegister({username, email, password});
+		console.log(res);
+		if (res.success) {
+			navigate('/login');
+		} else {
+			setUserAlreadyExists(true);
+			return;
 		}
 	};
 
@@ -48,7 +72,6 @@ const Register = (): JSX.Element => {
 				<Button
 					className="absolute top-4 right-4"
 					variant="light"
-					onClick={() => console.log("Switch to Login")}
 				>
 					Login
 				</Button>
@@ -77,6 +100,28 @@ const Register = (): JSX.Element => {
 					}}>
 					Entrez vos informations pour vous inscrire
 				</h2>
+				<h2
+					style={{
+						textAlign: "center",
+						fontSize: "1rem",
+						color: "red",
+						display: (userAlreadyExists || emptyFields) ? "block" : "none",
+					}}>
+					{userAlreadyExists && "Cette adresse email est déjà utilisée"}
+					{emptyFields && "Veuillez remplir tous les champs"}
+				</h2>
+				<Input
+					variant='bordered'
+					type='username'
+					placeholder='John Doe'
+					value={username}
+					onChange={(e) => {
+						setUsername(e.target.value);
+						setIsUsernameValid(false);
+						setEmptyFields(false);
+					}}
+					color={isUsernameValid ? "danger" : "default"}
+				/>
 				<Input
 					variant='bordered'
 					type='email'
@@ -85,6 +130,8 @@ const Register = (): JSX.Element => {
 					onChange={(e) => {
 						setEmail(e.target.value);
 						setEmailValid(false);
+						setUserAlreadyExists(false);
+						setEmptyFields(false);
 					}}
 					color={emailValid ? "danger" : "default"}
 					errorMessage={emailValid && "Please enter a valid email"}
@@ -109,7 +156,10 @@ const Register = (): JSX.Element => {
 					color={isPasswordInvalid.color}
 					description={isPasswordInvalid.strength && `Your password is ${isPasswordInvalid.strength}` }
 					value={password}
-					onChange={(e) => setPassword(e.target.value)}
+					onChange={(e) => {
+						setPassword(e.target.value)
+						setEmptyFields(false);
+					}}
 				/>
 				<Input
 					variant='bordered'
@@ -128,9 +178,13 @@ const Register = (): JSX.Element => {
 					}
 					type={isVisible ? "text" : "password"}
 					color={isConfirmPasswordInvalid ? "danger" : "default"}
-					description={isConfirmPasswordInvalid ? "Passwords do not match" : ""}
+					errorMessage={isConfirmPasswordInvalid ? "Passwords do not match" : ""}
 					value={confirmPassword}
-					onChange={(e) => setConfirmPassword(e.target.value)}
+					onChange={(e) => {
+						setConfirmPassword(e.target.value);
+						setIsConfirmPasswordInvalid(false);
+						setEmptyFields(false);
+					}}
 				/>
 				<Button
 					fullWidth={true}

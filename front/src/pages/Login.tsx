@@ -3,8 +3,9 @@ import Divider from "../Components/Divider/Divider";
 import { FaGoogle } from "react-icons/fa";
 import React from "react";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../Icons/Eyes";
-import { isEmailValid } from "../utils/isEmailValid";
+import { isEmailValid } from "../Utils/isEmailValid";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthLogin } from "../Services/Auth";
 
 const Login = (): JSX.Element => {
 	const navigate = useNavigate();
@@ -12,20 +13,30 @@ const Login = (): JSX.Element => {
 	const [password, setPassword] = React.useState("");
 	const [isVisible, setIsVisible] = React.useState(false);
 	const [emptyFields, setEmptyFields] = React.useState(false);
+	const [invalidUser, setInvalidUser] = React.useState(false);
+	const [isEmailInvalid, setIsEmailValid] = React.useState(false);
 
 	const toggleVisibility = () => setIsVisible(!isVisible);
-	
-	const isEmailInvalid = React.useMemo(() => {
-		return !isEmailValid(email);
-	}, [email]);
 
-	const handleSubmit = () => {
-		console.log(emptyFields);
+	const handleSubmit = async () => {
 		if (!email || !password) {
 			setEmptyFields(true);
 			return;
 		}
-		navigate('/dashboard/app');
+		const isValid = await isEmailValid(email);
+		if (!isValid) {
+			setIsEmailValid(!isValid);
+			return;
+		}
+		if (isEmailInvalid) {
+			return;
+		}
+		const res = await AuthLogin({ email, password });
+		if (res.success) {
+			navigate("/dashboard");
+		} else {
+			setInvalidUser(true);
+		}
 	};
 
     return (
@@ -71,12 +82,27 @@ const Login = (): JSX.Element => {
 					}}>
 					Entrez vos identifiants pour vous connecter
 				</h2>
+				<h2
+					style={{
+						textAlign: "center",
+						fontSize: "1rem",
+						color: "red",
+						display: (emptyFields || invalidUser) ? "block" : "none",
+					}}>
+					{emptyFields && "Veuillez remplir tous les champs"}
+					{invalidUser && "Identifiants incorrects"}
+				</h2>
 				<Input
 					variant='bordered'
 					type='email'
 					placeholder='nom@exemple.com'
 					value={email}
-					onChange={(e) => setEmail(e.target.value)}
+					onChange={(e) => {
+						setEmail(e.target.value);
+						setEmptyFields(false);
+						setInvalidUser(false);
+						setIsEmailValid(false);
+					}}
 					color={isEmailInvalid ? "danger" : "default"}
 					errorMessage={isEmailInvalid && "Please enter a valid email"}
 					isInvalid={isEmailInvalid}
@@ -98,7 +124,11 @@ const Login = (): JSX.Element => {
 					}
 					type={isVisible ? "text" : "password"}
 					value={password}
-					onChange={(e) => setPassword(e.target.value)}
+					onChange={(e) => {
+						setPassword(e.target.value)
+						setEmptyFields(false);
+						setInvalidUser(false);
+					}}
 				/>
 				<Button
 					fullWidth={true}
