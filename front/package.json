@@ -14,6 +14,7 @@
     "@devmehq/email-validator-js": "^1.0.19",
     "@mui/material": "^5.15.6",
     "@nextui-org/react": "^2.2.9",
+    "axios": "^1.6.7",
     "check-password-strength": "^2.0.7",
     "framer-motion": "^11.0.3",
     "next-themes": "^0.2.1",
@@ -21,11 +22,14 @@
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.4",
     "react-icons": "^5.0.1",
-    "react-router-dom": "^6.21.3"
+    "react-router-dom": "^6.21.3",
+    "universal-cookie": "^4.0.4"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "@types/universal-cookie": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
