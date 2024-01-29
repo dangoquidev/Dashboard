@@ -1,0 +1,15 @@
+.grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(6, 1fr);
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .grid > * {
+        grid-column: span 1;
+    }
+}
