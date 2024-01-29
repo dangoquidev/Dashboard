@@ -4,7 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Router } from "./router";
-import { AlwaysOnTop } from "./utils/AlwaysOnTop";
+import { AlwaysOnTop } from "./Utils/AlwaysOnTop";
 import "./main.css";
 const App = (): JSX.Element => {
 	return (

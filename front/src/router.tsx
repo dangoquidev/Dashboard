@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { ReactElement } from "react";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import OutletWrapper from "./utils/OutletWrapper";
+import OutletWrapper from "./Utils/OutletWrapper";
 import DashboardLayout from "./Components/Dashboard/DashboardLayout";
 import DashboardApp from "./pages/DashboardApp/DashboardApp";
 
