@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import OutletWrapper from "./utils/OutletWrapper";
 import DashboardLayout from "./Components/Dashboard/DashboardLayout";
-import DashboardApp from "./pages/DashboardApp";
+import DashboardApp from "./pages/DashboardApp/DashboardApp";
 
 export const Router = (): ReactElement => {
 	return (
