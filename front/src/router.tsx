@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ReactElement } from "react";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
 import OutletWrapper from "./Utils/OutletWrapper";
 import DashboardLayout from "./Components/Dashboard/DashboardLayout";
-import DashboardApp from "./pages/DashboardApp/DashboardApp";
+import DashboardApp from "./Pages/DashboardApp/DashboardApp";
 
 export const Router = (): ReactElement => {
 	return (
@@ -14,9 +14,12 @@ export const Router = (): ReactElement => {
 				<Route path='register' element={<Register />} />
 				<Route path='' element={<Navigate to='/login' />} />
 			</Route>
-			<Route path="/dashboard" element={<DashboardLayout />}>
-				<Route path="" element={<Navigate to="/dashboard/app" replace />} />
-				<Route path="app" element={<DashboardApp />} />
+			<Route path='/dashboard' element={<DashboardLayout />}>
+				<Route
+					path=''
+					element={<Navigate to='/dashboard/app' replace />}
+				/>
+				<Route path='app' element={<DashboardApp />} />
 			</Route>
 		</Routes>
 	);
