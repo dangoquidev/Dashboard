@@ -1,9 +1,11 @@
 import express from "express";
 
-import { connect } from "./google.controller";
+import { connect, searchYoutube } from "./google.controller";
 
 const router = express.Router();
 
 router.post("/connect", connect);
+
+router.get("/searchYoutube", searchYoutube);
 
 export default router;

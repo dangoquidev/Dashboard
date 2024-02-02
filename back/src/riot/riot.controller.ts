@@ -5,6 +5,7 @@ import {
 	getFiveLastGame,
 	getMatch,
 	getMatchInfoFromResponse,
+	getAccountInfo,
 } from "./riot.services";
 import { MatchInfo } from "./riot.type";
 
@@ -14,9 +15,8 @@ export const getMatchHistory = async (
 ) => {
 	const { IGN, region } = req.body;
 	const [GameName, TagLine] = IGN.split("#");
-	const matchHistoryInfo: MatchInfo[] = [];
 	try {
-	const account = await getPuuidFromInGameName(GameName, TagLine);
+		const account = await getPuuidFromInGameName(GameName, TagLine);
 
 		if (!account) {
 			return res
@@ -40,12 +40,10 @@ export const getMatchHistory = async (
 				.json({ success: false, message: "Games not found" });
 		}
 
-		games.map(async (matchId: string) => {
+		const matchHistoryInfo = await Promise.all(games.map(async (matchId: string) => {
 			const data = await getMatch(matchId, region);
-			matchHistoryInfo.push(
-				await getMatchInfoFromResponse(data, account.puuid)
-			);
-		});
+			return getMatchInfoFromResponse(data, account.puuid);
+		}));
 
 		return res
 			.status(200)
@@ -60,7 +58,8 @@ export const getMatchHistory = async (
 };
 
 
-export const getAccountInfo = async ( req : express.Request, res : express.Response ) => {
+
+export const getRankInfo = async ( req : express.Request, res : express.Response ) => {
 	const { IGN, region } = req.body;
 	const [GameName, TagLine] = IGN.split("#");
 	try {
@@ -80,16 +79,22 @@ export const getAccountInfo = async ( req : express.Request, res : express.Respo
 				.json({ success: false, message: "Account not found" });
 		}
 
-		
+		const rank = await getAccountInfo(info.id, region);
+
+		if (!rank) {
+			return res
+				.status(404)
+				.json({ success: false, message: "Account not found" });
+		}
 
 		return res
 			.status(200)
-			.json({ success: true, message: "Games fetched successfully" });
+			.json({ success: true, message: "Rank fetched successfully", rank });
 			
 	} catch (error) {
 		console.error(error);
 		return res
 			.status(500)
-			.json({ success: false, message: "Get match history failed" });
+			.json({ success: false, message: "Get rank failed" });
 	}
 }

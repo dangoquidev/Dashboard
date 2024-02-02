@@ -3,6 +3,7 @@ import express from "express";
 import { decode } from "jsonwebtoken";
 import { generateRandomPassword, random, authentification } from "../helpers";
 import { getUsersByEmail, createUser } from "../db/users"
+import { TrackItem, PlaylistItem } from './spotify.types';
 
 export const getSpotifyToken = async (code: string, redirect_uri: string) => {
 	const tokenEndpoint = "https://accounts.spotify.com/api/token";
@@ -96,3 +97,40 @@ export const createUserWithSpotifyToken = async (id_token: string) => {
 	}
 };
 
+export const getUserPlaylists = async (accessToken: string) => {
+    try {
+        const url = 'https://api.spotify.com/v1/me/playlists';
+        const headers = { Authorization: `Bearer ${accessToken}` };
+
+        const response = await axios.get(url, { headers });
+        const playlists = response.data.items.map((item: PlaylistItem) => ({
+            id: item.id,
+            name: item.name,
+            icon: item.images[0]?.url || '',
+        }));
+
+        return playlists;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const getPlaylistTracks = async (accessToken: string, playlistId: string) => {
+    try {
+        const url = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
+        const headers = { Authorization: `Bearer ${accessToken}` };
+
+        const response = await axios.get(url, { headers });
+        const tracks = response.data.items.map((item: TrackItem) => ({
+            name: item.track.name,
+            uri: item.track.uri,
+            album: item.track.album.images[0]?.url || '',
+        }));
+
+        return tracks;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}

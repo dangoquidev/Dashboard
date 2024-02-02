@@ -1,9 +1,11 @@
 import express from "express";
 
-import { connect } from "./spotify.controller";
+import { connect, getSpotifyPlaylist } from "./spotify.controller";
 
 const router = express.Router();
 
 router.post("/connect", connect);
+
+router.get("/getPlaylist", getSpotifyPlaylist);
 
 export default router;

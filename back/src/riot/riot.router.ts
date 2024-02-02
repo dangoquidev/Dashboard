@@ -1,9 +1,11 @@
 import express from "express";
 
-import { getMatchHistory } from "./riot.controller";
+import { getMatchHistory, getRankInfo } from "./riot.controller";
 
 const router = express.Router();
 
-router.get("/getAccount", getMatchHistory);
+router.get("/getMatcHistory", getMatchHistory);
+
+router.get("/getRankInfo", getRankInfo)
 
 export default router;

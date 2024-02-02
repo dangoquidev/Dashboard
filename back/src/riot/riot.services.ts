@@ -76,8 +76,6 @@ export const getMatchInfoFromResponse = async (response: any, puuid: string): Pr
         }
     })
 
-    console.log(gameDuration, isWin, gameMode, gameEndTime, champion, championImage, kda, cs, itemsArray, itemsNameArray);
-
     return { gameDuration, isWin, gameMode, gameEndTime, champion, championImage, kda, cs, itemsArray, itemsNameArray };
 }
 
@@ -98,7 +96,17 @@ export const getAccountInfo = async ( playerId: string, region: string ) => {
 
     try {
         const response = await axios.get(url, { headers });
-        return response.data;
+        const lenght = response.data.length;
+        if (lenght === 0) {
+            return { rank: "Unranked", tier: "Unranked", leaguePoints: 0, wins: 0, losses: 0, wr: 0 };
+        }
+        const rank = response.data[lenght - 1].rank;
+        const tier = response.data[lenght - 1].tier;
+        const leaguePoints = response.data[lenght - 1].leaguePoints;
+        const wins = response.data[lenght - 1].wins;
+        const losses = response.data[lenght - 1].losses;
+        const wr = ((wins / (wins + losses)) * 100).toFixed(2);
+        return { rank, tier, leaguePoints, wins, losses, wr };
     } catch (error) {
         console.error("Error occurred while making API call:", error);
         throw error;
