@@ -17,7 +17,8 @@ const Register = (): JSX.Element => {
 	const [password, setPassword] = React.useState("");
 	const [confirmPassword, setConfirmPassword] = React.useState("");
 	const [isVisible, setIsVisible] = React.useState(false);
-	const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] = React.useState(false);
+	const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] =
+		React.useState(false);
 	const [emailValid, setEmailValid] = React.useState(false);
 	const [emptyFields, setEmptyFields] = React.useState(false);
 	const [userAlreadyExists, setUserAlreadyExists] = React.useState(false);
@@ -48,72 +49,69 @@ const Register = (): JSX.Element => {
 		if (isPasswordInvalid.strength !== "strong") {
 			return;
 		}
-		const res = await AuthRegister({username, email, password});
+		const res = await AuthRegister({ username, email, password });
 		console.log(res);
 		if (res.success) {
-			navigate('/login');
+			navigate("/login");
 		} else {
 			setUserAlreadyExists(true);
 			return;
 		}
 	};
 
-    return (
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: "100vh",
-                padding: "0 20px",
-                boxSizing: "border-box",
-            }}
-        >
-			<Link to="/login">
-				<Button
-					className="absolute top-4 right-4"
-					variant="light"
-				>
+	return (
+		<div
+			style={{
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				minHeight: "100vh",
+				padding: "0 20px",
+				boxSizing: "border-box",
+			}}>
+			<Link to='/login'>
+				<Button className='absolute top-4 right-4' variant='light'>
 					Login
 				</Button>
 			</Link>
-            <div
-                style={{
-                    width: "100%",
-                    maxWidth: "400px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "10px",
-                }}
-            >
+			<div
+				style={{
+					width: "100%",
+					maxWidth: "400px",
+					display: "flex",
+					flexDirection: "column",
+					gap: "10px",
+				}}>
 				<h1
 					style={{
 						textAlign: "center",
 						fontWeight: "600",
 						fontSize: "2rem",
 					}}>
-					S'inscrire
+					Sign Up
 				</h1>
 				<h2
 					style={{
 						textAlign: "center",
 						fontSize: "1rem",
 					}}>
-					Entrez vos informations pour vous inscrire
+					Enter your information to sign up
 				</h2>
 				<h2
 					style={{
 						textAlign: "center",
 						fontSize: "1rem",
 						color: "red",
-						display: (userAlreadyExists || emptyFields) ? "block" : "none",
+						display:
+							userAlreadyExists || emptyFields ? "block" : "none",
 					}}>
-					{userAlreadyExists && "Cette adresse email est déjà utilisée"}
-					{emptyFields && "Veuillez remplir tous les champs"}
+					{userAlreadyExists &&
+						"This email address is already in use"}
+					{emptyFields && "Please fill in all fields"}
 				</h2>
 				<Input
 					variant='bordered'
-					type='username'
+					type='text'
 					placeholder='John Doe'
 					value={username}
 					onChange={(e) => {
@@ -126,7 +124,7 @@ const Register = (): JSX.Element => {
 				<Input
 					variant='bordered'
 					type='email'
-					placeholder='nom@exemple.com'
+					placeholder='name@example.com'
 					value={email}
 					onChange={(e) => {
 						setEmail(e.target.value);
@@ -140,7 +138,7 @@ const Register = (): JSX.Element => {
 				/>
 				<Input
 					variant='bordered'
-					placeholder='Mot de passe'
+					placeholder='Password'
 					endContent={
 						<button
 							className='focus:outline-none'
@@ -155,16 +153,19 @@ const Register = (): JSX.Element => {
 					}
 					type={isVisible ? "text" : "password"}
 					color={isPasswordInvalid.color}
-					description={isPasswordInvalid.strength && `Your password is ${isPasswordInvalid.strength}` }
+					description={
+						isPasswordInvalid.strength &&
+						`Your password is ${isPasswordInvalid.strength}`
+					}
 					value={password}
 					onChange={(e) => {
-						setPassword(e.target.value)
+						setPassword(e.target.value);
 						setEmptyFields(false);
 					}}
 				/>
 				<Input
 					variant='bordered'
-					placeholder='Confirmez votre mot de passe'
+					placeholder='Confirm Password'
 					endContent={
 						<button
 							className='focus:outline-none'
@@ -179,7 +180,9 @@ const Register = (): JSX.Element => {
 					}
 					type={isVisible ? "text" : "password"}
 					color={isConfirmPasswordInvalid ? "danger" : "default"}
-					errorMessage={isConfirmPasswordInvalid ? "Passwords do not match" : ""}
+					errorMessage={
+						isConfirmPasswordInvalid ? "Passwords do not match" : ""
+					}
 					value={confirmPassword}
 					onChange={(e) => {
 						setConfirmPassword(e.target.value);
@@ -191,15 +194,21 @@ const Register = (): JSX.Element => {
 					fullWidth={true}
 					className='bg-white text-black '
 					onClick={() => handleSubmit()}>
-					S'inscrire
+					Sign Up
 				</Button>
-				<Divider> Ou s'inscrire avec </Divider>
-				<div style={{ display: 'flex', gap: '10px' }}>
-					<Button fullWidth={true} variant='bordered' onClick={() => googleLogin()}>
+				<Divider> Or sign up with </Divider>
+				<div style={{ display: "flex", gap: "10px" }}>
+					<Button
+						fullWidth={true}
+						variant='bordered'
+						onClick={() => googleLogin()}>
 						<FaGoogle />
 						Google
 					</Button>
-					<Button variant='bordered' isIconOnly onClick={() => spotifyLogin()}>
+					<Button
+						variant='bordered'
+						isIconOnly
+						onClick={() => spotifyLogin()}>
 						<FaSpotify size={24} />
 					</Button>
 				</div>

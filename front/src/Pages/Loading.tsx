@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../config";
 import { saveCookies } from "../Libs/cookies";
+import { Spinner } from "@nextui-org/react";
 
 const Loading: React.FC = () => {
 	const [hasRequested, setHasRequested] = useState(false);
@@ -24,11 +25,11 @@ const Loading: React.FC = () => {
 					);
 					const { sessionToken, apiToken } = response.data;
 
-                    saveCookies('sessionToken', sessionToken);
-                    saveCookies(`${provider}Token`, apiToken);
+					saveCookies("sessionToken", sessionToken);
+					saveCookies(`${provider}Token`, apiToken);
 
-					const prevUrl = localStorage.getItem('prevUrl');
-					if (prevUrl && !prevUrl.includes('/login')) {
+					const prevUrl = localStorage.getItem("prevUrl");
+					if (prevUrl && !prevUrl.includes("/login")) {
 						window.location.href = prevUrl;
 					} else {
 						window.location.href = "/dashboard";
@@ -42,7 +43,17 @@ const Loading: React.FC = () => {
 		}
 	}, [hasRequested]);
 
-	return <div>Authentification en cours...</div>;
+	return (
+		<div
+			style={{
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+				height: "100vh",
+			}}>
+			<Spinner size='lg' label='Authentification en cours...' />
+		</div>
+	);
 };
 
 export default Loading;

@@ -9,7 +9,8 @@ export const authenticateToken = async (
 	next: express.NextFunction
 ) => {
 	try {
-		const sessionToken = req.cookies["SESSION-TOKEN"];
+		const authHeader = req.headers.authorization;
+		const sessionToken = authHeader && authHeader.split(" ")[1];
 
 		if (!sessionToken) {
 			return res.status(401).send("Un-Authorized");
