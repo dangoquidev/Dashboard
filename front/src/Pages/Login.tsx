@@ -1,11 +1,12 @@
 import { Button, Input} from "@nextui-org/react";
 import Divider from "../Components/Divider/Divider";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaSpotify } from "react-icons/fa";
 import React from "react";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../Icons/Eyes";
 import { isEmailValid } from "../Utils/isEmailValid";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthLogin } from "../Services/Auth";
+import { googleLogin, spotifyLogin } from "../Utils/OauthLogin";
 
 const Login = (): JSX.Element => {
 	const navigate = useNavigate();
@@ -137,10 +138,15 @@ const Login = (): JSX.Element => {
 					Se connecter
 				</Button>
 				<Divider> Ou se connecter avec </Divider>
-				<Button fullWidth={true} variant='bordered'>
-					<FaGoogle />
-					Google
-				</Button>
+				<div style={{ display: 'flex', gap: '10px' }}>
+					<Button fullWidth={true} variant='bordered' onClick={() => googleLogin()}>
+						<FaGoogle />
+						Google
+					</Button>
+					<Button variant='bordered' isIconOnly onClick={() => spotifyLogin()}>
+						<FaSpotify size={24} />
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

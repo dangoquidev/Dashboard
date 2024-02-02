@@ -5,6 +5,7 @@ import Register from "./Pages/Register";
 import OutletWrapper from "./Utils/OutletWrapper";
 import DashboardLayout from "./Components/Dashboard/DashboardLayout";
 import DashboardApp from "./Pages/DashboardApp/DashboardApp";
+import Loading from "./Pages/Loading";
 
 export const Router = (): ReactElement => {
 	return (
@@ -13,6 +14,7 @@ export const Router = (): ReactElement => {
 				<Route path='login' element={<Login />} />
 				<Route path='register' element={<Register />} />
 				<Route path='' element={<Navigate to='/login' />} />
+				<Route path='loading' element={<Loading />} />
 			</Route>
 			<Route path='/dashboard' element={<DashboardLayout />}>
 				<Route

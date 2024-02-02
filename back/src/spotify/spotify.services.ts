@@ -2,39 +2,56 @@ import axios from "axios";
 import express from "express";
 import { decode } from "jsonwebtoken";
 import { generateRandomPassword, random, authentification } from "../helpers";
-import { getUsersByEmail, createUser} from "../db/users"
+import { getUsersByEmail, createUser } from "../db/users"
 
-export const getGoogleToken = async (code: string, redirect_uri: string) => {
-	const tokenEndpoint = "https://oauth2.googleapis.com/token";
-	const client_id = process.env.VITE_GOOGLE_CLI;
-	const client_secret = process.env.GOOGLE_SECRET;
+export const getSpotifyToken = async (code: string, redirect_uri: string) => {
+	const tokenEndpoint = "https://accounts.spotify.com/api/token";
+	const client_id = process.env.VITE_SPOTIFY_CLI;
+	const client_secret = process.env.SPOTIFY_SECRET;
 	let tokenResponse = null;
+
 	try {
+        const headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
 		tokenResponse = await axios.post(tokenEndpoint, {
 			code,
 			redirect_uri,
 			client_id,
 			client_secret,
 			grant_type: "authorization_code",
-		});
+		}, {headers});
 	} catch (error) {
 		console.error(error);
 		return null;
 	}
 	return {
 		access_token: tokenResponse.data.access_token,
-		id_token: tokenResponse.data.id_token,
 	};
 };
 
-export const createUserWithGoogleToken = async (id_token: string) => {
-	const decodedToken = decode(id_token) as { [key: string]: any };
+const getInfoFromSpotify = async (token: string) => {
+    const spotifyEndpoint = "https://api.spotify.com/v1/me";
+    const headers = {
+        Authorization: `Bearer ${token}`,
+    };
+    try {
+        const response = await axios.get(spotifyEndpoint, { headers });
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
+export const createUserWithSpotifyToken = async (id_token: string) => {
+	const profile = await getInfoFromSpotify(id_token);
 	
-	if (decodedToken) {
-		const email = decodedToken.email;
-		const username = decodedToken.name;
+	if (profile) {
+		const email = profile.email;
+		const username = profile.display_name;
 		const pass = generateRandomPassword(12);
-		const pfp = decodedToken.picture;
+		const pfp = profile.images[0].url;
 
 		let user = await getUsersByEmail(email);
 		let salt = random();
@@ -68,13 +85,14 @@ export const createUserWithGoogleToken = async (id_token: string) => {
 
 		return {
 			success: true,
-			message: "Google oauth2 login successfuly",
+			message: "Spotify oauth2 login successfuly",
 			sessions_token: user.authentification.sessionToken,
 		};
 	} else {
 		return {
 			success: false,
-			message: "Google oauth2 login failed",
+			message: "Spotify oauth2 login failed",
 		};
 	}
 };
+

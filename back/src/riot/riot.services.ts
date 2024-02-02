@@ -92,3 +92,15 @@ export const getMatch = async (matchId: string, region: string) => {
         throw error;
     }
 }
+
+export const getAccountInfo = async ( playerId: string, region: string ) => {
+    const url = `https://${region}.api.riotgames.com/lol/league/v4/entries/by-summoner/${playerId}`;
+
+    try {
+        const response = await axios.get(url, { headers });
+        return response.data;
+    } catch (error) {
+        console.error("Error occurred while making API call:", error);
+        throw error;
+    }
+}

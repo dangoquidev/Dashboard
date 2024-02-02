@@ -1,13 +1,14 @@
 import React from "react";
 import { Button, Input } from "@nextui-org/react";
 import Divider from "../Components/Divider/Divider";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaSpotify } from "react-icons/fa";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "../Icons/Eyes";
 import { isPasswordStrong } from "../Utils/isPasswordStrong";
 import { isEmailValid } from "../Utils/isEmailValid";
 import { Link } from "react-router-dom";
 import { AuthRegister } from "../Services/Auth";
 import { useNavigate } from "react-router-dom";
+import { googleLogin, spotifyLogin } from "../Utils/OauthLogin";
 
 const Register = (): JSX.Element => {
 	const [username, setUsername] = React.useState("");
@@ -193,10 +194,15 @@ const Register = (): JSX.Element => {
 					S'inscrire
 				</Button>
 				<Divider> Ou s'inscrire avec </Divider>
-				<Button fullWidth={true} variant='bordered'>
-					<FaGoogle />
-					Google
-				</Button>
+				<div style={{ display: 'flex', gap: '10px' }}>
+					<Button fullWidth={true} variant='bordered' onClick={() => googleLogin()}>
+						<FaGoogle />
+						Google
+					</Button>
+					<Button variant='bordered' isIconOnly onClick={() => spotifyLogin()}>
+						<FaSpotify size={24} />
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

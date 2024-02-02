@@ -1,6 +1,6 @@
 import Cookie from "universal-cookie";
 
-export function saveCookies(field: string, value: any) {
+export function saveCookies(field: string, value: string) {
     const cookies = new Cookie();
     cookies.set(field, value, { path: "/", sameSite: true });
 }

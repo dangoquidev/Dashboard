@@ -1,0 +1,27 @@
+import express from "express";
+import { createUserWithSpotifyToken, getSpotifyToken } from "./spotify.services";
+
+export const connect = async (req: express.Request, res: express.Response) => {
+	try {
+		const { code, redirect_uri } = req.body;
+
+		const tokens = await getSpotifyToken(code, redirect_uri);
+
+		const user = await createUserWithSpotifyToken(tokens.access_token);
+
+		if (!user.success) {
+			return res
+				.status(500)
+				.json({ success: false, message: user.message });
+		}
+
+		return res
+			.status(200)
+			.json({ success: true, message: "Spotify oauth2 login successfuly", sessionToken: user.sessions_token, apiToken: tokens.access_token });
+	} catch (error) {
+		console.error(error);
+		return res
+			.status(500)
+			.json({ success: false, message: "Spotify oauth2 login failed" });
+	}
+};

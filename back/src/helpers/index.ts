@@ -10,3 +10,13 @@ export const authentification = (salt: string, password: string) => {
 		.update(process.env.SECRET)
 		.digest("hex");
 };
+
+export const generateRandomPassword = (length: number) => {
+	const buffer = crypto.randomBytes(length);
+	const password = buffer.toString('base64').slice(0, length);
+	return password;
+}
+
+export const generateToken = () => {
+	
+}
