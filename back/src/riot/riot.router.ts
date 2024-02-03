@@ -4,7 +4,7 @@ import { getMatchHistory, getRankInfo } from "./riot.controller";
 
 const router = express.Router();
 
-router.get("/getMatcHistory", getMatchHistory);
+router.get("/getMatchHistory", getMatchHistory);
 
 router.get("/getRankInfo", getRankInfo)
 

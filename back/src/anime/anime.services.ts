@@ -24,6 +24,7 @@ export const getAnime = async (title: string) => {
             description: data.attributes.synopsis,
             rating: ratingOutOf5.toFixed(2),
             image_url: data.attributes.posterImage.small,
+            episodes: data.attributes.episodeCount,
             year,
         };
 
