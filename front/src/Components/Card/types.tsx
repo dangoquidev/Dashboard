@@ -22,7 +22,7 @@ export type AnimeBodyProps = {
     episode: number;
 }
 
-type LeagueRank = {
+export type LeagueRank = {
     rank: string;
     tier: string;
     leaguePoints: number;
@@ -43,8 +43,34 @@ type LeagueGames = {
 
 export type LeagueBodyProps = {
     size: "small" | "medium" | "large";
-    rank: LeagueRank;
+    rankInfo: LeagueRank;
     games: LeagueGames[]
     name: string
 }
 
+export type YoutubeBodyProps = {
+    name: string;
+    size: "small" | "medium" | "large";
+    profilePicture: string;
+    subscribers: number;
+    views: number;
+    videos: number;
+};
+
+type Track = {
+    name: string;
+    uri: string;
+    album: string;
+};
+
+export type Playlist = {
+    id: string;
+    name: string;
+    icon: string;
+    tracks: Track[];
+};
+
+export type SpotifyBodyProps = {
+    playlists: Playlist[];
+    size: "small" | "medium" | "large";
+};
