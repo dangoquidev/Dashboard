@@ -17,13 +17,21 @@ router.use("/api", apiRouter);
 
 app.use(
 	cors({
+		origin: "http://localhost:8081",
 		credentials: true,
 	})
 );
 
 app.use(compression());
 app.use(cookieParser());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(
+	bodyParser.urlencoded({
+		limit: "50mb",
+		extended: true,
+		parameterLimit: 50000,
+	})
+);
 
 app.use(router);
 

@@ -1,11 +1,12 @@
 import express from "express";
 
 import { getMatchHistory, getRankInfo } from "./riot.controller";
+import { authenticateToken } from "../middlewares/auth";
 
 const router = express.Router();
 
-router.get("/getMatchHistory", getMatchHistory);
+router.post("/getMatchHistory", authenticateToken, getMatchHistory);
 
-router.get("/getRankInfo", getRankInfo)
+router.post("/getRankInfo", authenticateToken, getRankInfo);
 
 export default router;

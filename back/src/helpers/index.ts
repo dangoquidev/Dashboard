@@ -21,26 +21,30 @@ export const widgetList = [
 	{
 		id: 0,
 		title: "Anime Search",
-		url: "/anime/search"
+		url: "/anime/search",
+		placeholder: "Enter anime title",
 	},
 	{
 		id: 1,
 		title: "Weather",
-		url: "/weather/current"
+		url: "/weather/current",
+		placeholder: "Enter city name",
 	},
 	{
 		id: 2,
 		title: "League Profile",
-		url: ["/riot/getRankInfo", "/riot/getMatchHistory"]
+		url: ["/riot/getRankInfo", "/riot/getMatchHistory"],
+		placeholder: "Enter riot tag",
 	},
 	{
 		id: 3,
 		title: "Youtube",
-		url: "/google/searchYoutube"
+		url: "/google/searchYoutube",
+		placeholder: "Enter channel name",
 	},
 	{
 		id: 4,
 		title: "Spotify",
-		url: "/spotify/getPlaylist"
-	}
+		url: "/spotify/getPlaylist",
+	},
 ];

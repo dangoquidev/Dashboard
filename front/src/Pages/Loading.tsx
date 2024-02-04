@@ -16,7 +16,6 @@ const Loading: React.FC = () => {
 
 		if (code && !hasRequested) {
 			setHasRequested(true);
-			console.log(code);
 			const sendCodeToBackend = async () => {
 				try {
 					const response = await axios.post(

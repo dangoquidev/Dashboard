@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { AuthRegister } from "../Services/Auth";
 import { useNavigate } from "react-router-dom";
 import { googleLogin, spotifyLogin } from "../Utils/OauthLogin";
+import { readFromCookies } from "../Libs/cookies";
 
 const Register = (): JSX.Element => {
 	const [username, setUsername] = React.useState("");
@@ -27,6 +28,13 @@ const Register = (): JSX.Element => {
 	const isPasswordInvalid = React.useMemo(() => {
 		return isPasswordStrong(password);
 	}, [password]);
+
+	React.useEffect(() => {
+		const token = readFromCookies("sessionToken");
+		if (token) {
+			window.location.href = "/dashboard";
+		}
+	});
 
 	const toggleVisibility = () => setIsVisible(!isVisible);
 

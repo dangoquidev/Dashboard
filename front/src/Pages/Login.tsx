@@ -7,7 +7,7 @@ import { isEmailValid } from "../Utils/isEmailValid";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthLogin } from "../Services/Auth";
 import { googleLogin, spotifyLogin } from "../Utils/OauthLogin";
-import { saveCookies } from "../Libs/cookies";
+import { saveCookies, readFromCookies } from "../Libs/cookies";
 
 const Login = (): JSX.Element => {
 	const navigate = useNavigate();
@@ -19,6 +19,13 @@ const Login = (): JSX.Element => {
 	const [isEmailInvalid, setIsEmailValid] = React.useState(false);
 
 	const toggleVisibility = () => setIsVisible(!isVisible);
+
+	React.useEffect(() => {
+		const token = readFromCookies("sessionToken");
+		if (token) {
+			window.location.href = "/dashboard";
+		}
+	});
 
 	const handleSubmit = async () => {
 		if (!email || !password) {

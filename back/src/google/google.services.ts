@@ -2,7 +2,7 @@ import axios from "axios";
 import express from "express";
 import { decode } from "jsonwebtoken";
 import { generateRandomPassword, random, authentification } from "../helpers";
-import { getUsersByEmail, createUser} from "../db/users"
+import { getUsersByEmail, createUser } from "../db/users";
 
 export const getGoogleToken = async (code: string, redirect_uri: string) => {
 	const tokenEndpoint = "https://oauth2.googleapis.com/token";
@@ -29,7 +29,7 @@ export const getGoogleToken = async (code: string, redirect_uri: string) => {
 
 export const createUserWithGoogleToken = async (id_token: string) => {
 	const decodedToken = decode(id_token) as { [key: string]: any };
-	
+
 	if (decodedToken) {
 		const email = decodedToken.email;
 		const username = decodedToken.name;
@@ -39,7 +39,7 @@ export const createUserWithGoogleToken = async (id_token: string) => {
 		let user = await getUsersByEmail(email);
 		let salt = random();
 
-		if (!user ) {
+		if (!user) {
 			user = await createUser({
 				email,
 				username,
@@ -50,12 +50,12 @@ export const createUserWithGoogleToken = async (id_token: string) => {
 				},
 			});
 		}
-		
+
 		user.authentification.sessionToken = authentification(
 			salt,
 			user._id.toString()
 		);
-		
+
 		try {
 			await user.save();
 		} catch (error) {

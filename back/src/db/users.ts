@@ -12,16 +12,20 @@ const userSchema = new mongoose.Schema({
 	profilePicture: { type: String, required: false },
 	widgets: [
 		{
-			id: Number,
-			title: String,
-			type: String,
+			id: { type: Number, required: true },
+			params: { type: Array, required: true },
 			data: Schema.Types.Mixed,
+			size: { type: String, required: true },
 		},
 	],
 });
 
 export const userModel = mongoose.model("User", userSchema);
 
+export const getUserWidgets = (userId: string) =>
+	userModel.findById(userId).select("widgets");
+export const getUserPfp = (userId: string) =>
+	userModel.findById(userId).select("profilePicture");
 export const getUsers = () => userModel.find({});
 export const getUsersByEmail = (email: string) => userModel.findOne({ email });
 export const getUserBySessionToken = (token: string) =>

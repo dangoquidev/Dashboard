@@ -3,7 +3,7 @@ import { API_URL } from "../config";
 import { readFromCookies } from "./cookies";
 
 const createAxiosInstance = (): AxiosInstance => {
-	const accessToken = readFromCookies("accessToken");
+	const accessToken = readFromCookies("sessionToken");
 	let reqHeaders: { [key: string]: string } = {
 		Authorization: `Bearer ${accessToken}`,
 	};

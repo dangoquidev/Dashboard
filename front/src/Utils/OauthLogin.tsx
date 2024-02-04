@@ -12,7 +12,8 @@ export const googleLogin = () => {
 export const spotifyLogin = () => {
 	const client_id = import.meta.env.VITE_SPOTIFY_CLI;
 	const redirectUrl = `${window.location.origin}/loading?provider=spotify`;
-	const scope = "user-read-private user-read-email user-library-read streaming";
+	const scope =
+		"user-read-private user-read-email user-library-read streaming";
 
 	const spotifyAuthUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${client_id}&scope=${encodeURIComponent(
 		scope
