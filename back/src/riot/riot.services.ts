@@ -39,7 +39,7 @@ export const getInfoFromPuuid = async (puuid: string, region: string) => {
 };
 
 export const getFiveLastGame = async (puuid: string, region: string) => {
-	const url = `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=20`;
+	const url = `https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?start=0&count=15`;
 
 	try {
 		const response = await axios.get(url, { headers });

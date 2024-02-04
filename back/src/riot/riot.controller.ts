@@ -53,7 +53,6 @@ export const getMatchHistory = async (
 			matchHistoryInfo,
 		});
 	} catch (error) {
-		console.error(error);
 		return res
 			.status(500)
 			.json({ success: false, message: "Get match history failed" });

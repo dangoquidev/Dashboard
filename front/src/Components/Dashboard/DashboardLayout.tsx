@@ -11,7 +11,7 @@ interface Widget {
 }
 
 const DashboardLayout = (): JSX.Element => {
-	const [widgetList, setWidgetList] = useState<Widget[]>([]);
+	const [widgetList, setWidgetList] = useState<any[]>([]);
 
 	useEffect(() => {
 		const token = readFromCookies("sessionToken");

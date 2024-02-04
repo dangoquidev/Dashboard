@@ -1,11 +1,27 @@
-FROM node:20-alpine
+FROM node:20-alpine as BUILD_IMAGE
 
 WORKDIR /front
 
+COPY package.json .
+
+RUN yarn
+
 COPY . .
 
-RUN yarn cache clean
+RUN yarn build
 
-RUN yarn install
+FROM node:20-alpine as PROD_IMAGE
+WORKDIR /front
 
-CMD ["yarn", "dev"]
+COPY --from=BUILD_IMAGE /front/dist /front/dist
+
+EXPOSE 8081
+
+COPY package.json .
+COPY vite.config.ts .
+
+RUN yarn add typescript
+
+EXPOSE 8081
+
+CMD ["yarn", "preview"]
