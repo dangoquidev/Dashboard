@@ -4,8 +4,8 @@ WORKDIR /back
 
 COPY . .
 
-RUN npm cache clear --force
+RUN yarn cache clean
 
-RUN npm install
+RUN yarn install
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
