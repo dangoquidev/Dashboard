@@ -18,9 +18,29 @@ export const generateRandomPassword = (length: number) => {
 };
 
 export const widgetList = [
-	"Weather",
-	"Anime Search",
-	"League Profile",
-	"YoutubeInfo",
-	"Spotify",
+	{
+		id: 0,
+		title: "Anime Search",
+		url: "/anime/search"
+	},
+	{
+		id: 1,
+		title: "Weather",
+		url: "/weather/current"
+	},
+	{
+		id: 2,
+		title: "League Profile",
+		url: ["/riot/getRankInfo", "/riot/getMatchHistory"]
+	},
+	{
+		id: 3,
+		title: "Youtube",
+		url: "/google/searchYoutube"
+	},
+	{
+		id: 4,
+		title: "Spotify",
+		url: "/spotify/getPlaylist"
+	}
 ];

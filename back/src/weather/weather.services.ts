@@ -13,8 +13,8 @@ export const getWeather = async (city: string) => {
         const weather = {
             city: data.location.name,
             temperature: data.current.temp_c,
-            condition: data.current.condition.text,
             icon: `https:${data.current.condition.icon}`,
+            precipitation: data.current.precip_mm,
             windSpeed: data.current.wind_kph,
             humidity: data.current.humidity,
         };
